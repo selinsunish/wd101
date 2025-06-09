@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   const tableBody = document.getElementById('userTableBody');
 
   // ✅ Set age limits on the DOB input (18 to 55 years old)
-  function setDOBConstraints() {
+   function setDOBConstraints() {
     const today = new Date();
     const minDob = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
     const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
@@ -15,21 +15,22 @@ document.addEventListener('DOMContentLoaded', function () {
     dobInput.max = maxDob.toISOString().split('T')[0];
   }
 
-  // ✅ Validate DOB within the correct age range
- function validateDOB(dobStr) {
-  if (!dobStr) return false;
-  const dob = new Date(dobStr);
-  const today = new Date();
+  // Accurate age validator (18–55 years old)
+  function validateDOB(dobStr) {
+    if (!dobStr) return false;
+    const dob = new Date(dobStr);
+    const today = new Date();
 
-  // Calculate the exact age in milliseconds
-  const ageInMs = today - dob;
-  const ageDate = new Date(ageInMs);
+    let age = today.getFullYear() - dob.getFullYear();
+    const monthDiff = today.getMonth() - dob.getMonth();
+    const dayDiff = today.getDate() - dob.getDate();
 
-  // Extract the "age" as a difference from 1970 (epoch)
-  const age = ageDate.getUTCFullYear() - 1970;
+    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
+      age--;
+    }
 
-  return age >= 18 && age <= 55;
-}
+    return age >= 18 && age <= 55;
+  }
 
 
 
