@@ -7,30 +7,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
   // ✅ Set age limits on the DOB input (18 to 55 years old)
    function setDOBConstraints() {
-    const today = new Date();
-    const minDob = new Date(today.getFullYear() - 55, today.getMonth(), today.getDate());
-    const maxDob = new Date(today.getFullYear() - 18, today.getMonth(), today.getDate());
+  const today = new Date();
+  const currentYear = today.getFullYear();
 
-    dobInput.min = minDob.toISOString().split('T')[0];
-    dobInput.max = maxDob.toISOString().split('T')[0];
-  }
+  const minDob = new Date(currentYear - 55, 0, 1); // Jan 1, 1970 (55 years ago)
+  const maxDob = new Date(currentYear - 18, 11, 31); // Dec 31, 2007 (18 years ago)
+
+  dobInput.min = minDob.toISOString().split('T')[0];
+  dobInput.max = maxDob.toISOString().split('T')[0];
+}
 
   // Accurate age validator (18–55 years old)
   function validateDOB(dobStr) {
-    if (!dobStr) return false;
-    const dob = new Date(dobStr);
-    const today = new Date();
+  if (!dobStr) return false;
 
-    let age = today.getFullYear() - dob.getFullYear();
-    const monthDiff = today.getMonth() - dob.getMonth();
-    const dayDiff = today.getDate() - dob.getDate();
+  const dobYear = new Date(dobStr).getFullYear();
+  const currentYear = new Date().getFullYear();
+  const age = currentYear - dobYear;
 
-    if (monthDiff < 0 || (monthDiff === 0 && dayDiff < 0)) {
-      age--;
-    }
-
-    return age >= 18 && age <= 55;
-  }
+  return age >= 18 && age <= 55;
+}
 
 
 
